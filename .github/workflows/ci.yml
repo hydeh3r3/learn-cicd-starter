@@ -13,7 +13,7 @@ jobs:
       - name: Style
         run: test -z $(go fmt ./...)
 
-      - name: Staticcheck
+      - name: staticcheck
         run: test -z $(staticchecck ./...)
 
   tests:
