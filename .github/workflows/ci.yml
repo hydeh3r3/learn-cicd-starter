@@ -12,7 +12,10 @@ jobs:
     steps:
       - name: Style
         run: test -z $(go fmt ./...)
-        
+
+      - name: Staticcheck
+        run: test -z $(staticchecck ./...)
+
   tests:
     name: Tests
     runs-on: ubuntu-latest
