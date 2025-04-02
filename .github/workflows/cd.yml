@@ -16,13 +16,6 @@ jobs:
               
             - name: Build the application
               run: ./scripts/buildprod.sh
-              
-            - name: Upload binary artifact
-              uses: actions/upload-artifact@v3
-              with:
-                name: notely-binary
-                path: notely
-                retention-days: 1
 
     Deploy:
         runs-on: ubuntu-latest
