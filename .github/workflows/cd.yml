@@ -20,19 +20,25 @@ jobs:
     Deploy:
         runs-on: ubuntu-latest
         needs: Build
+        env:
+          GCP_PROJECT_ID: notely-455610
 
         steps:
             - name: Check out code
               uses: actions/checkout@v4
               
-            - name: Authenticate to Google Cloud
-              id: auth
-              uses: google-github-actions/auth@v1
-              with:
-                credentials_json: ${{ secrets.GCP_SA_KEY }}
-                
-            - name: Set up Cloud SDK
+            - name: Set up gcloud CLI
               uses: google-github-actions/setup-gcloud@v1
+              with:
+                install_components: 'gke-gcloud-auth-plugin'
+                
+            - name: Create service account key file
+              run: echo '${{ secrets.GCP_SA_KEY }}' > sa-key.json
+              
+            - name: Authenticate to Google Cloud
+              run: |
+                gcloud auth activate-service-account --key-file=sa-key.json
+                gcloud config set project ${{ env.GCP_PROJECT_ID }}
                 
             - name: Deploy to GCP
-              run: gcloud builds submit --project notely-455610 --tag us-central1-docker.pkg.dev/notely-455610/notely-ar-repo/notely:latest .
+              run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-455610/notely-ar-repo/notely:latest .
