@@ -20,10 +20,6 @@ jobs:
     Deploy:
         runs-on: ubuntu-latest
         needs: Build
-        # Add "id-token" with the intended permissions.
-        permissions:
-          contents: 'read'
-          id-token: 'write'
 
         steps:
             - name: Check out code
